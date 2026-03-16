@@ -1,0 +1,94 @@
+---
+import Base from "./Base.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+
+interface Props {
+	title: string;
+	description?: string;
+	publishDate: Date;
+	tags?: string[];
+}
+
+const { title, description, publishDate, tags = [] } = Astro.props;
+
+const dateFormatted = publishDate.toLocaleDateString("en-US", {
+	month: "short",
+	day: "numeric",
+	year: "numeric",
+});
+---
+
+<Base title={title} description={description}>
+	<Header />
+	<main class="constrained post-main">
+		<header class="post-header">
+			<h1>{title}</h1>
+			<time datetime={publishDate.toISOString()} class="post-date text-subtitle">
+				{dateFormatted}
+			</time>
+		</header>
+
+		<div class="post-content" data-pagefind-body>
+			<slot />
+		</div>
+
+		{tags.length > 0 && (
+			<div class="post-tags">
+				{tags.map((tag) => (
+					<a href={`/tags/${tag}`} class="tag-pill">{tag}</a>
+				))}
+			</div>
+		)}
+	</main>
+	<Footer />
+</Base>
+
+<style>
+	.post-main {
+		padding-top: var(--space-sm);
+		padding-bottom: var(--space-sm);
+	}
+
+	.post-header {
+		margin-bottom: var(--space-lg);
+	}
+
+	.post-header h1 {
+		margin-bottom: var(--space-xs);
+	}
+
+	.post-date {
+		display: block;
+	}
+
+	.post-content {
+		margin-bottom: var(--space-lg);
+	}
+
+	.post-tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-xs);
+		margin-top: var(--space-lg);
+		padding-top: var(--space-lg);
+		border-top: 1px solid var(--color-3);
+	}
+
+	.tag-pill {
+		display: inline-block;
+		padding: 2px 10px;
+		border: 1px solid var(--color-4);
+		border-radius: 100px;
+		font-size: var(--font-size-sm);
+		color: var(--color-5);
+		text-decoration: none;
+		transition: transform 200ms ease, border-color 200ms ease;
+	}
+
+	.tag-pill:hover {
+		transform: scale(1.05);
+		border-color: var(--color-5);
+		color: var(--color-6);
+	}
+</style>
