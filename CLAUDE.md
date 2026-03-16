@@ -10,9 +10,9 @@ The full migration plan is at: `wp-reference/MIGRATION-PLAN.md`
 ## Progress
 
 - **Session 1: COMPLETE** — Project structure, design tokens, palettes, ThemeStyles.astro, global.css, Base.astro layout, fonts, test index page
-- **Session 2: IN PROGRESS** — Layouts + Components Base
-  - DONE: Navigation.astro
-  - TODO: Header.astro, Footer.astro, Post.astro layout, Page.astro layout, Content Collections (config + sample posts/pages), `[...slug].astro` flat URL routing, build verification
+- **Session 2: COMPLETE** — Layouts + Components Base
+  - DONE: Navigation.astro, Header.astro, Footer.astro, Post.astro layout, Page.astro layout, Content Collections (src/content.config.ts with Astro v6 glob loaders, sample posts/pages), `[...slug].astro` flat URL routing, build verified (4 pages)
+  - NOTE: Astro v6 requires content config at `src/content.config.ts` (not `src/content/config.ts`) with explicit `glob()` loaders
 - **Session 3: PENDING** — Home page + Post components (PostCard, PostListItem, LatestPost, RecentPosts, TagCloud)
 - **Session 4: PENDING** — Tags page, Pagination, RelatedPosts, Search (Pagefind), 404
 - **Session 5: PENDING** — Webmentions, Decap CMS, Sitemap + RSS
