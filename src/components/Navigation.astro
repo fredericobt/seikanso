@@ -1,0 +1,54 @@
+---
+import { siteConfig } from "../config/site";
+
+interface Props {
+	orientation?: "horizontal" | "vertical";
+}
+
+const { orientation = "horizontal" } = Astro.props;
+const currentPath = Astro.url.pathname;
+---
+
+<nav>
+	<ul class:list={["nav", `nav-${orientation}`]}>
+		{siteConfig.navigation.map((item) => (
+			<li>
+				<a
+					href={item.href}
+					aria-current={currentPath === item.href ? "page" : undefined}
+				>
+					{item.label}
+				</a>
+			</li>
+		))}
+	</ul>
+</nav>
+
+<style>
+	.nav {
+		display: flex;
+		gap: var(--space-sm);
+		list-style: none;
+		padding: 0;
+	}
+
+	.nav-vertical {
+		flex-direction: column;
+	}
+
+	.nav a {
+		color: var(--color-6);
+		font-size: var(--font-size-sm);
+		text-decoration: none;
+	}
+
+	.nav a:hover {
+		text-decoration: underline;
+		text-underline-offset: 2px;
+	}
+
+	.nav a[aria-current="page"] {
+		text-decoration: underline;
+		text-underline-offset: 2px;
+	}
+</style>

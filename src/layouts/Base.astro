@@ -1,0 +1,83 @@
+---
+import ThemeStyles from "../components/ThemeStyles.astro";
+import { siteConfig } from "../config/site";
+import "../styles/global.css";
+
+interface Props {
+	title?: string;
+	description?: string;
+}
+
+const { title, description } = Astro.props;
+const pageTitle = title ? `${title} — ${siteConfig.title}` : siteConfig.title;
+const pageDescription = description || siteConfig.description;
+---
+
+<!doctype html>
+<html lang={siteConfig.lang}>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{pageTitle}</title>
+		<meta name="description" content={pageDescription} />
+
+		<!-- Preload active font -->
+		<link
+			rel="preload"
+			href="/fonts/InterVariable.ttf"
+			as="font"
+			type="font/ttf"
+			crossorigin
+		/>
+
+		<ThemeStyles />
+
+		<style is:global>
+			/* ── @font-face declarations ── */
+			@font-face {
+				font-family: "Inter";
+				font-style: normal;
+				font-weight: 100 800;
+				font-display: swap;
+				src: url("/fonts/InterVariable.ttf") format("truetype");
+			}
+
+			@font-face {
+				font-family: "Inter";
+				font-style: italic;
+				font-weight: 100 800;
+				font-display: swap;
+				src: url("/fonts/InterVariable-Italic.ttf") format("truetype");
+			}
+
+			@font-face {
+				font-family: "Geist Mono";
+				font-style: normal;
+				font-weight: 100 800;
+				font-display: swap;
+				src: url("/fonts/GeistMonoVariable.woff2") format("woff2");
+			}
+
+			@font-face {
+				font-family: "Noto Serif";
+				font-style: normal;
+				font-weight: 400;
+				font-display: swap;
+				src: url("/fonts/NotoSerif-Variable.ttf") format("truetype");
+			}
+
+			@font-face {
+				font-family: "Noto Serif";
+				font-style: italic;
+				font-weight: 400;
+				font-display: swap;
+				src: url("/fonts/NotoSerif-Italic-Variable.ttf")
+					format("truetype");
+			}
+		</style>
+	</head>
+	<body>
+		<slot />
+	</body>
+</html>

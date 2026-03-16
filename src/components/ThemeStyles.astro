@@ -1,0 +1,82 @@
+---
+import {
+	activePalette,
+	activeFont,
+	fontPresets,
+	spacing,
+	layout,
+	fontSizes,
+} from "../config/theme";
+
+const palette = activePalette;
+const font = fontPresets[activeFont];
+const c = palette.colors;
+const d = palette.dark;
+
+const css = `
+:root {
+	/* Colors – anchors */
+	--color-1: ${c.color1};
+	--color-6: ${c.color6};
+
+	/* Colors – computed via color-mix */
+	--color-2: color-mix(in srgb, var(--color-1) ${c.mix2[0]}%, var(--color-6) ${c.mix2[1]}%);
+	--color-3: color-mix(in srgb, var(--color-1) ${c.mix3[0]}%, var(--color-6) ${c.mix3[1]}%);
+	--color-4: color-mix(in srgb, var(--color-1) ${c.mix4[0]}%, var(--color-6) ${c.mix4[1]}%);
+	--color-5: color-mix(in srgb, var(--color-1) ${c.mix5[0]}%, var(--color-6) ${c.mix5[1]}%);
+
+	/* Dark mode colors */
+	--color-1-dark: ${d.color1Dark};
+	--color-6-dark: ${d.color6Dark};
+	--color-2-dark: color-mix(in srgb, var(--color-1) ${d.mix2[0]}%, var(--color-6) ${d.mix2[1]}%);
+	--color-3-dark: color-mix(in srgb, var(--color-1) ${d.mix3[0]}%, var(--color-6) ${d.mix3[1]}%);
+	--color-4-dark: color-mix(in srgb, var(--color-1) ${d.mix4[0]}%, var(--color-6) ${d.mix4[1]}%);
+	--color-5-dark: color-mix(in srgb, var(--color-1) ${d.mix5[0]}%, var(--color-6) ${d.mix5[1]}%);
+
+	${c.accent ? `/* Accent */\n\t--color-accent: ${c.accent};` : ""}
+
+	/* Spacing */
+	--space-xs: ${spacing.xs};
+	--space-sm: ${spacing.sm};
+	--space-md: ${spacing.md};
+	--space-lg: ${spacing.lg};
+	--space-xl: ${spacing.xl};
+	--space-2xl: ${spacing["2xl"]};
+	--space-3xl: ${spacing["3xl"]};
+
+	/* Layout */
+	--content-width: ${layout.contentWidth};
+	--wide-width: ${layout.wideWidth};
+
+	/* Typography */
+	--font-family: ${font.family};
+	--font-size-body: ${font.bodySize};
+	--line-height-body: ${font.bodyLineHeight};
+	--heading-weight: ${font.headingWeight};
+	--heading-line-height: ${font.headingLineHeight};
+
+	/* Font sizes (fluid) */
+	--font-size-sm: ${fontSizes.small};
+	--font-size-md: ${fontSizes.medium};
+	--font-size-lg: ${fontSizes.large};
+	--font-size-xl: ${fontSizes.xLarge};
+
+	/* Misc */
+	--transition-duration: 200ms;
+	--shadow-inset: inset 0 0 0 1px var(--color-3);
+	--shadow-inset-2: inset 0 0 0 1px var(--color-4);
+}
+
+/* Dark mode override */
+.theme-dark {
+	--color-1: var(--color-1-dark);
+	--color-2: var(--color-2-dark);
+	--color-3: var(--color-3-dark);
+	--color-4: var(--color-4-dark);
+	--color-5: var(--color-5-dark);
+	--color-6: var(--color-6-dark);
+}
+`;
+---
+
+<style is:inline set:html={css}></style>
