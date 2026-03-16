@@ -1,0 +1,65 @@
+---
+/**
+ * TagCloud — tags como pills clicáveis
+ * Mapeia core/tag-cloud do theme.json + seção "Topics" de page-home.php
+ * Tags únicas extraídas de todos os posts, ordenadas alfabeticamente
+ */
+import { getCollection } from "astro:content";
+
+const posts = await getCollection("posts", ({ data }) => !data.draft);
+
+// Collect all unique tags
+const tagSet = new Set<string>();
+for (const post of posts) {
+	for (const tag of post.data.tags) {
+		tagSet.add(tag);
+	}
+}
+const tags = [...tagSet].sort();
+---
+
+{
+	tags.length > 0 && (
+		<section class="tag-cloud">
+			<p class="text-subtitle">Topics</p>
+			<div class="tag-list">
+				{tags.map((tag) => (
+					<a href={`/tags/${tag}`} class="tag-pill">
+						{tag}
+					</a>
+				))}
+			</div>
+		</section>
+	)
+}
+
+<style>
+	.tag-cloud {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.tag-list {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px;
+		margin-top: 0;
+	}
+
+	.tag-pill {
+		display: inline-block;
+		font-size: var(--font-size-sm);
+		color: var(--color-6);
+		text-decoration: none;
+		border: 1px solid var(--color-3);
+		border-radius: 4px;
+		padding: 2px var(--space-sm);
+		line-height: 1.6;
+		transition: background-color 150ms ease, transform 150ms ease;
+	}
+
+	.tag-pill:hover {
+		background-color: var(--color-2);
+		transform: scale(1.04);
+	}
+</style>

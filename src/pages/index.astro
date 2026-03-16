@@ -1,73 +1,52 @@
 ---
+/**
+ * Home page — mapeia patterns/page-home.php
+ * Tagline → LatestPost → RecentPosts → TagCloud
+ */
 import Base from "../layouts/Base.astro";
+import { siteConfig } from "../config/site";
+import { getCollection } from "astro:content";
+import LatestPost from "../components/LatestPost.astro";
+import RecentPosts from "../components/RecentPosts.astro";
+import TagCloud from "../components/TagCloud.astro";
+
+// Get the latest post id to exclude it from RecentPosts
+const posts = await getCollection("posts", ({ data }) => !data.draft);
+posts.sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
+const latestId = posts[0]?.id;
 ---
 
-<Base title="Home">
-	<div class="constrained" style={{paddingTop: "var(--space-xl)", paddingBottom: "var(--space-xl)"}}>
-		<h1 class="text-title">Kanso for Astro</h1>
-		<p class="text-subtitle" style={{marginTop: "var(--space-xs)"}}>Design tokens test page</p>
+<Base title={siteConfig.title} description={siteConfig.description}>
+	<div class="constrained home-content">
 
-		<hr style={{margin: "var(--space-lg) 0"}} />
+		<p class="text-subtitle site-tagline">{siteConfig.description}</p>
 
-		<h2>Color Palette</h2>
-		<div style={{display: "flex", gap: "var(--space-xs)", marginTop: "var(--space-sm)", flexWrap: "wrap"}}>
-			<div style={{width: "60px", height: "60px", background: "var(--color-1)", border: "1px solid var(--color-3)", borderRadius: "var(--space-xs)"}}></div>
-			<div style={{width: "60px", height: "60px", background: "var(--color-2)", borderRadius: "var(--space-xs)"}}></div>
-			<div style={{width: "60px", height: "60px", background: "var(--color-3)", borderRadius: "var(--space-xs)"}}></div>
-			<div style={{width: "60px", height: "60px", background: "var(--color-4)", borderRadius: "var(--space-xs)"}}></div>
-			<div style={{width: "60px", height: "60px", background: "var(--color-5)", borderRadius: "var(--space-xs)"}}></div>
-			<div style={{width: "60px", height: "60px", background: "var(--color-6)", borderRadius: "var(--space-xs)"}}></div>
+		<div class="home-section">
+			<LatestPost />
 		</div>
 
-		<h2 style={{marginTop: "var(--space-lg)"}}>Typography</h2>
-		<p>This is body text in the active font.</p>
-		<p><strong>Bold text has weight 550.</strong></p>
-		<p><em>Italic text.</em></p>
-		<p>Inline <code>code element</code> with border.</p>
-
-		<h2 style={{marginTop: "var(--space-lg)"}}>Font Sizes</h2>
-		<p style={{fontSize: "var(--font-size-sm)"}}>Small (0.885rem)</p>
-		<p style={{fontSize: "var(--font-size-md)"}}>Medium (fluid)</p>
-		<p style={{fontSize: "var(--font-size-lg)"}}>Large (fluid)</p>
-		<p style={{fontSize: "var(--font-size-xl)"}}>Extra Large (fluid)</p>
-
-		<h2 style={{marginTop: "var(--space-lg)"}}>Section Styles</h2>
-
-		<div class="section-3" style={{padding: "var(--space-sm) var(--space-md)", marginTop: "var(--space-sm)"}}>
-			<p><strong>Section 3</strong> — border card style</p>
+		<div class="home-section">
+			<RecentPosts excludeId={latestId} />
 		</div>
 
-		<div class="section-2" style={{padding: "var(--space-sm) var(--space-md)", marginTop: "var(--space-sm)"}}>
-			<p><strong>Section 2</strong> — subtle highlight</p>
+		<div class="home-section">
+			<TagCloud />
 		</div>
 
-		<div class="section-1" style={{padding: "var(--space-sm) var(--space-md)", marginTop: "var(--space-sm)"}}>
-			<p><strong>Section 1</strong> — dark inverted</p>
-			<a href="#">Link inside section-1</a>
-		</div>
-
-		<h2 style={{marginTop: "var(--space-lg)"}}>Elements</h2>
-
-		<a href="#" class="btn" style={{marginTop: "var(--space-sm)"}}>Button</a>
-		<a href="#" class="btn btn-outline" style={{marginTop: "var(--space-sm)"}}>Outline Button</a>
-
-		<blockquote style={{marginTop: "var(--space-md)"}}>
-			<p>This is a blockquote — styled with left border and italic.</p>
-			<cite>— Author Name</cite>
-		</blockquote>
-
-		<pre><code>{"// Code block\nfunction hello() {\n  console.log(\"Kanso for Astro\");\n}"}</code></pre>
-
-		<h2 style={{marginTop: "var(--space-lg)"}}>Spacing</h2>
-		<div style={{display: "flex", gap: "var(--space-xs)", alignItems: "end", marginTop: "var(--space-sm)"}}>
-			<div style={{width: "40px", height: "var(--space-xs)", background: "var(--color-4)"}}></div>
-			<div style={{width: "40px", height: "var(--space-sm)", background: "var(--color-4)"}}></div>
-			<div style={{width: "40px", height: "var(--space-md)", background: "var(--color-4)"}}></div>
-			<div style={{width: "40px", height: "var(--space-lg)", background: "var(--color-4)"}}></div>
-			<div style={{width: "40px", height: "var(--space-xl)", background: "var(--color-4)"}}></div>
-			<div style={{width: "40px", height: "var(--space-2xl)", background: "var(--color-4)"}}></div>
-			<div style={{width: "40px", height: "var(--space-3xl)", background: "var(--color-4)"}}></div>
-		</div>
-		<p class="text-subtitle" style={{marginTop: "var(--space-xs)"}}>xs · sm · md · lg · xl · 2xl · 3xl</p>
 	</div>
 </Base>
+
+<style>
+	.home-content {
+		padding-top: var(--space-xs);
+		padding-bottom: var(--space-xl);
+	}
+
+	.site-tagline {
+		margin-bottom: var(--space-xs);
+	}
+
+	.home-section {
+		margin-top: var(--space-md);
+	}
+</style>

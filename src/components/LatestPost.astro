@@ -1,0 +1,39 @@
+---
+/**
+ * LatestPost — card destaque do post mais recente
+ * Mapeia patterns/posts-latest.php e a seção "Latest" de page-home.php
+ * section-3 card com padding, label "Latest", PostCard dentro
+ */
+import { getCollection } from "astro:content";
+import PostCard from "./PostCard.astro";
+
+const posts = await getCollection("posts", ({ data }) => !data.draft);
+posts.sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
+const latest = posts[0];
+---
+
+{
+	latest && (
+		<section class="latest-post">
+			<p class="text-subtitle">Latest</p>
+			<div
+				class="section-3 latest-card"
+			>
+				<PostCard post={latest} />
+			</div>
+		</section>
+	)
+}
+
+<style>
+	.latest-post {
+		display: flex;
+		flex-direction: column;
+		gap: 0;
+	}
+
+	.latest-card {
+		padding: 22px var(--space-md);
+		margin-top: 0;
+	}
+</style>
