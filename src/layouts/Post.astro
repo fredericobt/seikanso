@@ -2,15 +2,17 @@
 import Base from "./Base.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import RelatedPosts from "../components/RelatedPosts.astro";
 
 interface Props {
 	title: string;
 	description?: string;
 	publishDate: Date;
 	tags?: string[];
+	id: string;
 }
 
-const { title, description, publishDate, tags = [] } = Astro.props;
+const { title, description, publishDate, tags = [], id } = Astro.props;
 
 const dateFormatted = publishDate.toLocaleDateString("en-US", {
 	month: "short",
@@ -40,6 +42,9 @@ const dateFormatted = publishDate.toLocaleDateString("en-US", {
 				))}
 			</div>
 		)}
+		<div class="post-related">
+			<RelatedPosts currentId={id} />
+		</div>
 	</main>
 	<Footer />
 </Base>
@@ -64,6 +69,10 @@ const dateFormatted = publishDate.toLocaleDateString("en-US", {
 
 	.post-content {
 		margin-bottom: var(--space-lg);
+	}
+
+	.post-related {
+		border-top: 1px solid var(--color-3);
 	}
 
 	.post-tags {

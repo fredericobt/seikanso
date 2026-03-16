@@ -1,0 +1,130 @@
+---
+/**
+ * Pagination — Prev / page numbers / Next.
+ * Maps to WP query-pagination block in archive.html and search.html.
+ *
+ * Uses Astro's built-in Page type from paginate().
+ */
+import type { Page } from "astro";
+
+interface Props {
+	page: Page<unknown>;
+}
+
+const { page } = Astro.props;
+
+// Build page number list
+const totalPages = page.lastPage;
+const current = page.currentPage;
+
+// Derive base URL from the first page URL (e.g. "/posts/" → "/posts")
+const base = (page.url.first ?? "/posts").replace(/\/$/, "");
+
+// Build a URL for a given page number
+function pageUrl(n: number): string {
+	return n === 1 ? `${base}/` : `${base}/${n}/`;
+}
+
+// Show up to 5 page numbers centered around current
+const range = 2;
+const start = Math.max(1, current - range);
+const end = Math.min(totalPages, current + range);
+const pageNumbers = Array.from({ length: end - start + 1 }, (_, i) => start + i);
+---
+
+{totalPages > 1 && (
+	<nav class="pagination" aria-label="Pagination">
+		{page.url.prev
+			? <a href={page.url.prev} class="pagination__arrow" aria-label="Previous page">←</a>
+			: <span class="pagination__arrow pagination__arrow--disabled" aria-hidden="true">←</span>
+		}
+
+		<div class="pagination__numbers">
+			{start > 1 && (
+				<>
+					<a href={pageUrl(1)} class="pagination__num">1</a>
+					{start > 2 && <span class="pagination__ellipsis">…</span>}
+				</>
+			)}
+
+			{pageNumbers.map(n => (
+				n === current
+					? <span class="pagination__num pagination__num--current" aria-current="page">{n}</span>
+					: <a href={pageUrl(n)} class="pagination__num">{n}</a>
+			))}
+
+			{end < totalPages && (
+				<>
+					{end < totalPages - 1 && <span class="pagination__ellipsis">…</span>}
+					<a href={pageUrl(totalPages)} class="pagination__num">{totalPages}</a>
+				</>
+			)}
+		</div>
+
+		{page.url.next
+			? <a href={page.url.next} class="pagination__arrow" aria-label="Next page">→</a>
+			: <span class="pagination__arrow pagination__arrow--disabled" aria-hidden="true">→</span>
+		}
+	</nav>
+)}
+
+<style>
+	.pagination {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--space-sm);
+		margin-top: var(--space-lg);
+	}
+
+	.pagination__arrow {
+		font-size: var(--font-size-xl);
+		color: var(--color-5);
+		text-decoration: none;
+		line-height: 1;
+		padding: var(--space-xs);
+	}
+
+	.pagination__arrow:hover {
+		color: var(--color-6);
+	}
+
+	.pagination__arrow--disabled {
+		color: var(--color-3);
+		cursor: default;
+	}
+
+	.pagination__numbers {
+		display: flex;
+		align-items: center;
+		gap: var(--space-xs);
+	}
+
+	.pagination__num {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-width: 28px;
+		height: 28px;
+		padding: 0 4px;
+		font-size: var(--font-size-sm);
+		color: var(--color-5);
+		text-decoration: none;
+		border-radius: 4px;
+	}
+
+	.pagination__num:hover {
+		color: var(--color-6);
+	}
+
+	.pagination__num--current {
+		font-weight: 600;
+		color: var(--color-6);
+		background: var(--color-2);
+	}
+
+	.pagination__ellipsis {
+		color: var(--color-4);
+		font-size: var(--font-size-sm);
+	}
+</style>

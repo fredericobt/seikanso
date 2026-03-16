@@ -1,7 +1,10 @@
 ---
 /**
- * PostCard — título linkado + excerpt + data
- * Mapeia wp:post-template dentro do patterns/posts-latest.php
+ * PostCard — card de post para listagens (archive, tag pages).
+ * Mapeia WP parts/post.html usado em archive.html (font-size: large).
+ *
+ * API: recebe CollectionEntry<"posts"> completo para type-safety.
+ * Props extras: excerptLength (default 36 palavras, como no WP).
  */
 import type { CollectionEntry } from "astro:content";
 
@@ -12,17 +15,15 @@ interface Props {
 
 const { post, excerptLength = 36 } = Astro.props;
 const { title, publishDate, description } = post.data;
-const slug = post.id;
+const href = `/${post.id}`;
 
-const date = new Date(publishDate);
-const dateFormatted = date.toLocaleDateString("en-US", {
+const dateFormatted = publishDate.toLocaleDateString("en-US", {
 	month: "short",
 	day: "numeric",
 	year: "numeric",
 });
-const dateISO = date.toISOString();
 
-// Trim excerpt to ~excerptLength words
+// Trunca excerpt para ~excerptLength palavras, como o bloco wp:post-excerpt
 const words = (description ?? "").split(" ");
 const excerpt =
 	words.length > excerptLength
@@ -31,22 +32,18 @@ const excerpt =
 ---
 
 <div class="post-card">
-	<h2 class="post-card-title">
-		<a href={`/${slug}`}>{title}</a>
+	<h2 class="post-card__title">
+		<a href={href}>{title}</a>
 	</h2>
-	<time datetime={dateISO} class="post-card-date">
-		<a href={`/${slug}`}>{dateFormatted}</a>
+	<time datetime={publishDate.toISOString()} class="post-card__date">
+		<a href={href}>{dateFormatted}</a>
 	</time>
-	{
-		excerpt && (
-			<p class="post-card-excerpt">
-				{excerpt}{" "}
-				<a href={`/${slug}`} class="keep-reading">
-					Keep reading →
-				</a>
-			</p>
-		)
-	}
+	{excerpt && (
+		<p class="post-card__excerpt">
+			{excerpt}{" "}
+			<a href={href} class="post-card__more">Keep reading →</a>
+		</p>
+	)}
 </div>
 
 <style>
@@ -54,54 +51,55 @@ const excerpt =
 		display: flex;
 		flex-direction: column;
 		gap: var(--space-xs);
+		padding: var(--space-sm) 0 var(--space-2xl);
 	}
 
-	.post-card-title {
-		font-size: var(--font-size-md);
+	.post-card__title {
+		font-size: var(--font-size-lg);
 		font-weight: 550;
 		line-height: 1.3;
 		margin: 0;
 	}
 
-	.post-card-title a {
+	.post-card__title a {
 		color: var(--color-6);
 		text-decoration: none;
 	}
 
-	.post-card-title a:hover {
+	.post-card__title a:hover {
 		text-decoration: underline;
 		text-underline-offset: 2px;
 	}
 
-	.post-card-date {
+	.post-card__date {
 		font-size: var(--font-size-sm);
 		color: var(--color-5);
 	}
 
-	.post-card-date a {
+	.post-card__date a {
 		color: inherit;
 		text-decoration: none;
 	}
 
-	.post-card-date a:hover {
+	.post-card__date a:hover {
 		text-decoration: underline;
 		text-underline-offset: 2px;
 	}
 
-	.post-card-excerpt {
+	.post-card__excerpt {
 		font-size: var(--font-size-sm);
 		color: var(--color-5);
 		margin: 0;
 		line-height: 1.6;
 	}
 
-	.keep-reading {
+	.post-card__more {
 		color: var(--color-6);
 		text-decoration: none;
 		white-space: nowrap;
 	}
 
-	.keep-reading:hover {
+	.post-card__more:hover {
 		text-decoration: underline;
 		text-underline-offset: 2px;
 	}

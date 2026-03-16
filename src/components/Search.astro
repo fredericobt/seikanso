@@ -1,0 +1,90 @@
+---
+/**
+ * Search — Pagefind search UI.
+ * Renders a div that Pagefind hydrates on the client.
+ * Requires Pagefind to be run after build: `pagefind --site dist`
+ */
+---
+
+<div id="search" class="search-container"></div>
+
+<link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
+
+<script is:inline>
+	// Dynamically load Pagefind UI after page loads
+	// pagefind is generated after `npm run build` — not available in dev
+	(async function () {
+		try {
+			const { PagefindUI } = await import("/pagefind/pagefind-ui.js");
+			new PagefindUI({
+				element: "#search",
+				showSubResults: false,
+				resetStyles: false,
+			});
+		} catch {
+			// In dev mode pagefind hasn't run yet — show a notice
+			const el = document.getElementById("search");
+			if (el) el.innerHTML = '<p style="color:var(--color-5);font-size:var(--font-size-sm)">Search is available after running <code>npm run build</code>.</p>';
+		}
+	})();
+</script>
+
+<style>
+	.search-container {
+		width: 100%;
+	}
+
+	/* Override Pagefind UI styles to match Kanso design */
+	:global(.pagefind-ui__search-input) {
+		background: var(--color-1);
+		border: 1px solid var(--color-3);
+		border-radius: 8px;
+		color: var(--color-6);
+		font-family: var(--font-family);
+		font-size: var(--font-size-md);
+		padding: var(--space-xs) var(--space-sm);
+		width: 100%;
+		box-sizing: border-box;
+		outline: none;
+		transition: border-color 200ms ease;
+	}
+
+	:global(.pagefind-ui__search-input:focus-visible) {
+		border-color: var(--color-5);
+		box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-5) 20%, transparent);
+	}
+
+	:global(.pagefind-ui__search-clear) {
+		color: var(--color-5);
+		background: none;
+		border: none;
+		cursor: pointer;
+	}
+
+	:global(.pagefind-ui__result) {
+		border-top: 1px solid var(--color-3);
+		padding: var(--space-sm) 0;
+	}
+
+	:global(.pagefind-ui__result-title a) {
+		color: var(--color-6);
+		font-size: var(--font-size-md);
+		text-decoration: none;
+	}
+
+	:global(.pagefind-ui__result-title a:hover) {
+		text-decoration: underline;
+		text-underline-offset: 2px;
+	}
+
+	:global(.pagefind-ui__result-excerpt) {
+		color: var(--color-5);
+		font-size: var(--font-size-sm);
+		margin-top: 4px;
+	}
+
+	:global(.pagefind-ui__message) {
+		color: var(--color-5);
+		font-size: var(--font-size-sm);
+	}
+</style>

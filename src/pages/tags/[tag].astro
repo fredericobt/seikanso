@@ -1,0 +1,70 @@
+---
+/**
+ * /tags/[tag] — Posts filtrados por tag.
+ * Mapeia WP archive.html.
+ */
+import type { CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content";
+import Base from "../../layouts/Base.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import PostCard from "../../components/PostCard.astro";
+import TagCloud from "../../components/TagCloud.astro";
+
+export async function getStaticPaths() {
+	const posts = await getCollection("posts", ({ data }) => !data.draft);
+	const tags = [...new Set(posts.flatMap(p => p.data.tags))];
+	return tags.map(tag => ({
+		params: { tag },
+		props: {
+			posts: posts
+				.filter(p => p.data.tags.includes(tag))
+				.sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf()),
+		},
+	}));
+}
+
+const { tag } = Astro.params;
+const { posts } = Astro.props as { posts: CollectionEntry<"posts">[] };
+---
+
+<Base title={`Posts tagged "${tag}"`}>
+	<Header />
+	<main class="constrained tag-main">
+		<div class="tag-header">
+			<h1 class="tag-title">{tag}</h1>
+			<TagCloud />
+		</div>
+
+		<div class="tag-posts">
+			{posts.map((post, i) => (
+				<>
+					<PostCard post={post} />
+					{i < posts.length - 1 && <hr class="tag-sep" />}
+				</>
+			))}
+		</div>
+	</main>
+	<Footer />
+</Base>
+
+<style>
+	.tag-main {
+		padding-top: var(--space-sm);
+		padding-bottom: var(--space-xl);
+	}
+
+	.tag-header {
+		margin-bottom: var(--space-xl);
+	}
+
+	.tag-title {
+		margin-bottom: var(--space-sm);
+	}
+
+	.tag-sep {
+		margin: 0;
+		border: none;
+		border-top: 1px solid var(--color-3);
+	}
+</style>

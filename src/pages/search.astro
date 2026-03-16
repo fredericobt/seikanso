@@ -1,0 +1,29 @@
+---
+/**
+ * /search — Search page powered by Pagefind.
+ * Maps to WP templates/search.html.
+ *
+ * Note: Pagefind indexes are generated after `npm run build`.
+ * Run `npm run build` then the search UI will work in production.
+ * In dev, the search UI shows but has no results until after a build.
+ */
+import Base from "../layouts/Base.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import Search from "../components/Search.astro";
+---
+
+<Base title="Search" description="Search all posts.">
+	<Header />
+	<main class="constrained search-main">
+		<Search />
+	</main>
+	<Footer />
+</Base>
+
+<style>
+	.search-main {
+		padding-top: var(--space-sm);
+		padding-bottom: var(--space-xl);
+	}
+</style>

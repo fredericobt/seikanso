@@ -1,48 +1,46 @@
 ---
 /**
- * RecentPosts — lista de posts recentes com separadores + botão "View all posts →"
- * Mapeia patterns/posts-recent.php
- * section-3 card, 5 posts em PostListItem, botão full-width
+ * RecentPosts — lista de posts recentes em section-3 card.
+ * Mapeia patterns/posts-recent.php e a seção "Posts" de page-home.php.
+ *
+ * Design: label "Posts" + section-3 card com PostListItems (título + data,
+ * separados por hr) + botão "View all posts →" full-width.
+ *
+ * Props:
+ *   limit     — quantidade de posts (default: 5, como no WP perPage: 5)
+ *   excludeId — id do post a excluir (evita duplicar o LatestPost)
  */
 import { getCollection } from "astro:content";
 import PostListItem from "./PostListItem.astro";
 
 interface Props {
-	/** Quantos posts exibir (default: 5) */
 	limit?: number;
-	/** Slug do post a excluir (ex: o post já exibido em LatestPost) */
 	excludeId?: string;
 }
 
 const { limit = 5, excludeId } = Astro.props;
 
-const posts = await getCollection("posts", ({ data }) => !data.draft);
-posts.sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
-
-const recent = posts
-	.filter((p) => p.id !== excludeId)
+const posts = (await getCollection("posts", ({ data }) => !data.draft))
+	.sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf())
+	.filter(p => p.id !== excludeId)
 	.slice(0, limit);
 ---
 
-{
-	recent.length > 0 && (
-		<section class="recent-posts">
-			<p class="text-subtitle">Posts</p>
-			<div class="section-3 recent-card">
-				<div class="recent-list">
-					{recent.map((post) => (
-						<PostListItem post={post} />
-					))}
-				</div>
-				<div class="view-all-wrap">
-					<a href="/posts" class="btn view-all-btn">
-						View all posts <strong>→</strong>
-					</a>
-				</div>
+{posts.length > 0 && (
+	<section class="recent-posts">
+		<p class="text-subtitle">Posts</p>
+		<div class="recent-posts__card section-3">
+			<div class="recent-posts__list">
+				{posts.map(post => (
+					<PostListItem post={post} />
+				))}
 			</div>
-		</section>
-	)
-}
+			<a href="/posts" class="btn recent-posts__btn">
+				View all posts <strong>→</strong>
+			</a>
+		</div>
+	</section>
+)}
 
 <style>
 	.recent-posts {
@@ -50,23 +48,20 @@ const recent = posts
 		flex-direction: column;
 	}
 
-	.recent-card {
+	.recent-posts__card {
 		padding: 6px var(--space-md) 26px;
 	}
 
-	.recent-list {
+	.recent-posts__list {
 		display: flex;
 		flex-direction: column;
 	}
 
-	.view-all-wrap {
-		margin-top: var(--space-sm);
-	}
-
-	.view-all-btn {
+	.recent-posts__btn {
 		display: block;
 		width: 100%;
 		text-align: center;
+		margin-top: var(--space-sm);
 		box-sizing: border-box;
 	}
 </style>
