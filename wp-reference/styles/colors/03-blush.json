@@ -1,0 +1,63 @@
+{
+	"version": 3,
+	"$schema": "https://schemas.wp.org/trunk/theme.json",
+	"title": "Blush",
+	"settings": {
+		"color": {
+			"palette": [
+				{
+					"color": "hsl(12 100% 98%)",
+					"name": "Color 1",
+					"slug": "theme-1"
+				},
+				{
+					"color": "color-mix(in srgb, var(--wp--preset--color--theme-1) 95%, var(--wp--preset--color--theme-6) 5%)",
+					"name": "Color 2",
+					"slug": "theme-2"
+				},
+				{
+					"color": "color-mix(in srgb, var(--wp--preset--color--theme-1) 90%, var(--wp--preset--color--theme-6) 10%)",
+					"name": "Color 3",
+					"slug": "theme-3"
+				},
+				{
+					"color": "color-mix(in srgb, var(--wp--preset--color--theme-1) 80%, var(--wp--preset--color--theme-6) 20%)",
+					"name": "Color 4",
+					"slug": "theme-4"
+				},
+				{
+					"color": "color-mix(in srgb, var(--wp--preset--color--theme-1) 50%, var(--wp--preset--color--theme-6) 50%)",
+					"name": "Color 5",
+					"slug": "theme-5"
+				},
+				{
+					"color": "hsl(12 85% 6%)",
+					"name": "Color 6",
+					"slug": "theme-6"
+				}
+			],
+			"duotone": [
+				{
+					"colors": [ "hsl(12 85% 6%)", "hsl(12 100% 98%)" ],
+					"slug": "duotone-1",
+					"name": "Duotone 1"
+				},
+				{
+					"colors": [ "hsl(12 100% 98%)", "hsl(12 85% 6%)" ],
+					"slug": "duotone-2",
+					"name": "Duotone 2"
+				}
+			]
+		},
+		"custom": {
+			"color": {
+				"theme-1-dark": "var(--wp--preset--color--theme-6)",
+				"theme-2-dark": "color-mix(in srgb, var(--wp--preset--color--theme-1) 4%, var(--wp--preset--color--theme-6) 96%)",
+				"theme-3-dark": "color-mix(in srgb, var(--wp--preset--color--theme-1) 12%, var(--wp--preset--color--theme-6) 88%)",
+				"theme-4-dark": "color-mix(in srgb, var(--wp--preset--color--theme-1) 25%, var(--wp--preset--color--theme-6) 75%)",
+				"theme-5-dark": "color-mix(in srgb, var(--wp--preset--color--theme-1) 45%, var(--wp--preset--color--theme-6) 55%)",
+				"theme-6-dark": "var(--wp--preset--color--theme-1)"
+			}
+		}
+	}
+}
