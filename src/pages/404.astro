@@ -3,7 +3,7 @@
  * 404 — "Whoops, that page is gone."
  * Maps to WP templates/404.html.
  *
- * Design: centered heading + description + search input, min-height 70vh.
+ * Design: centered heading + description, min-height 70vh.
  */
 import Base from "../layouts/Base.astro";
 import Header from "../components/Header.astro";
@@ -16,7 +16,6 @@ import Footer from "../components/Footer.astro";
 		<div class="not-found__inner">
 			<h1 class="not-found__heading">Whoops, that page is gone.</h1>
 			<p class="not-found__desc">Discover my popular posts, or search for something else.</p>
-			<a href="/search" class="not-found__search-link">Search all posts →</a>
 		</div>
 	</main>
 	<Footer />
@@ -51,8 +50,4 @@ import Footer from "../components/Footer.astro";
 		margin: 0;
 	}
 
-	.not-found__search-link {
-		font-size: var(--font-size-sm);
-		color: var(--color-5);
-	}
 </style>
