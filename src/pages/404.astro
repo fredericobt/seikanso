@@ -16,17 +16,7 @@ import Footer from "../components/Footer.astro";
 		<div class="not-found__inner">
 			<h1 class="not-found__heading">Whoops, that page is gone.</h1>
 			<p class="not-found__desc">Discover my popular posts, or search for something else.</p>
-			<div class="not-found__search">
-				<form action="/search" method="get" class="not-found__form">
-					<input
-						type="search"
-						name="q"
-						placeholder="Search for posts"
-						class="not-found__input"
-						aria-label="Search"
-					/>
-				</form>
-			</div>
+			<a href="/search" class="not-found__search-link">Search all posts →</a>
 		</div>
 	</main>
 	<Footer />
@@ -61,30 +51,8 @@ import Footer from "../components/Footer.astro";
 		margin: 0;
 	}
 
-	.not-found__search {
-		margin-top: 4px;
-	}
-
-	.not-found__form {
-		display: flex;
-	}
-
-	.not-found__input {
-		width: 100%;
-		padding: var(--space-xs) var(--space-sm);
-		border: 1px solid var(--color-3);
-		border-radius: 8px;
-		background: var(--color-1);
-		color: var(--color-6);
-		font-family: var(--font-family);
-		font-size: var(--font-size-md);
-		outline: none;
-		transition: border-color 200ms ease;
-		box-sizing: border-box;
-	}
-
-	.not-found__input:focus-visible {
-		border-color: var(--color-5);
-		box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-5) 20%, transparent);
+	.not-found__search-link {
+		font-size: var(--font-size-sm);
+		color: var(--color-5);
 	}
 </style>

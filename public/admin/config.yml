@@ -3,8 +3,8 @@ backend:
   repo: fredericobt/astro-kanso
   branch: main
 
-media_folder: src/assets/uploads
-public_folder: /src/assets/uploads
+media_folder: public/uploads
+public_folder: /uploads
 
 collections:
   - name: posts
