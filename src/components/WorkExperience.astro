@@ -1,0 +1,75 @@
+---
+interface ExperienceItem {
+	period: string;
+	role: string;
+	subtitle?: string;
+}
+
+interface Props {
+	items: ExperienceItem[];
+	label?: string;
+}
+
+const { items, label = "Work Experience" } = Astro.props;
+---
+
+<div class="work-experience">
+	<p class="text-subtitle work-experience-label">{label}</p>
+	<div class="work-experience-list">
+		{
+			items.map((item) => (
+				<div class="work-experience-row">
+					<div class="work-experience-period">
+						<p class="text-subtitle">{item.period}</p>
+					</div>
+					<div class="work-experience-details">
+						<p>{item.role}</p>
+						{item.subtitle && (
+							<p class="text-subtitle">{item.subtitle}</p>
+						)}
+					</div>
+				</div>
+			))
+		}
+	</div>
+</div>
+
+<style>
+	.work-experience {
+		padding-top: var(--space-xs);
+		padding-bottom: var(--space-xs);
+	}
+
+	.work-experience-label {
+		margin-bottom: var(--space-sm);
+	}
+
+	.work-experience-list {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-lg);
+	}
+
+	.work-experience-row {
+		display: grid;
+		grid-template-columns: 33.33% 66.66%;
+		gap: var(--space-xs) var(--space-sm);
+	}
+
+	.work-experience-period p,
+	.work-experience-details p {
+		margin: 0;
+	}
+
+	.work-experience-details {
+		display: flex;
+		flex-direction: column;
+	}
+
+	@media (max-width: 480px) {
+		.work-experience-row {
+			grid-template-columns: 1fr;
+			gap: var(--space-xs);
+		}
+	}
+</style>

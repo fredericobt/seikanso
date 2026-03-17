@@ -1,0 +1,243 @@
+---
+import { siteConfig } from "../config/site";
+
+interface WmAuthor {
+	name?: string;
+	photo?: string;
+	url?: string;
+}
+
+interface Webmention {
+	"wm-property": "like-of" | "repost-of" | "in-reply-to" | "mention-of";
+	"wm-received": string;
+	url: string;
+	author?: WmAuthor;
+	content?: { text?: string; html?: string };
+}
+
+let likes: Webmention[] = [];
+let replies: Webmention[] = [];
+let reposts: Webmention[] = [];
+
+if (siteConfig.webmentionDomain) {
+	try {
+		const targetUrl = Astro.url.href;
+		const endpoint = `https://webmention.io/api/mentions.jf2?domain=${siteConfig.webmentionDomain}&target=${encodeURIComponent(targetUrl)}&per-page=100`;
+		const res = await fetch(endpoint);
+		if (res.ok) {
+			const data = await res.json();
+			const children: Webmention[] = data.children || [];
+			for (const m of children) {
+				if (m["wm-property"] === "like-of") likes.push(m);
+				else if (m["wm-property"] === "repost-of") reposts.push(m);
+				else replies.push(m);
+			}
+		}
+	} catch {
+		// webmention.io not configured or unavailable at build time
+	}
+}
+
+const hasAny = likes.length > 0 || reposts.length > 0 || replies.length > 0;
+---
+
+{
+	hasAny && (
+		<section class="webmentions">
+			{likes.length > 0 && (
+				<div class="wm-group">
+					<p class="wm-label text-subtitle">
+						{likes.length} like{likes.length !== 1 ? "s" : ""}
+					</p>
+					<div class="wm-avatars">
+						{likes.map((like) => (
+							<a
+								href={like.url}
+								title={like.author?.name || "Anonymous"}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								{like.author?.photo ? (
+									<img
+										src={like.author.photo}
+										alt={like.author.name || ""}
+										width="28"
+										height="28"
+									/>
+								) : (
+									<span class="wm-avatar-fallback">
+										{(like.author?.name || "?")[0]}
+									</span>
+								)}
+							</a>
+						))}
+					</div>
+				</div>
+			)}
+
+			{reposts.length > 0 && (
+				<div class="wm-group">
+					<p class="wm-label text-subtitle">
+						{reposts.length} repost{reposts.length !== 1 ? "s" : ""}
+					</p>
+					<div class="wm-avatars">
+						{reposts.map((repost) => (
+							<a
+								href={repost.url}
+								title={repost.author?.name || "Anonymous"}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								{repost.author?.photo ? (
+									<img
+										src={repost.author.photo}
+										alt={repost.author.name || ""}
+										width="28"
+										height="28"
+									/>
+								) : (
+									<span class="wm-avatar-fallback">
+										{(repost.author?.name || "?")[0]}
+									</span>
+								)}
+							</a>
+						))}
+					</div>
+				</div>
+			)}
+
+			{replies.length > 0 && (
+				<div class="wm-group">
+					<p class="wm-label text-subtitle">
+						{replies.length} repl{replies.length !== 1 ? "ies" : "y"}
+					</p>
+					{replies.map((reply) => (
+						<article class="wm-reply">
+							<div class="wm-reply-header">
+								<a
+									href={reply.url}
+									target="_blank"
+									rel="noopener noreferrer"
+									class="wm-reply-author"
+								>
+									{reply.author?.photo && (
+										<img
+											src={reply.author.photo}
+											alt={reply.author.name || ""}
+											width="34"
+											height="34"
+										/>
+									)}
+									<span>{reply.author?.name || "Anonymous"}</span>
+								</a>
+								<time
+									class="text-subtitle"
+									datetime={reply["wm-received"]}
+								>
+									{new Date(reply["wm-received"]).toLocaleDateString(
+										"en-US",
+										{ month: "short", day: "numeric", year: "numeric" }
+									)}
+								</time>
+							</div>
+							{reply.content?.text && (
+								<p class="wm-reply-content">{reply.content.text}</p>
+							)}
+						</article>
+					))}
+				</div>
+			)}
+		</section>
+	)
+}
+
+<style>
+	.webmentions {
+		padding-top: var(--space-lg);
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-md);
+	}
+
+	.wm-label {
+		margin-bottom: var(--space-xs);
+	}
+
+	.wm-avatars {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 4px;
+	}
+
+	.wm-avatars a {
+		display: block;
+		border-radius: 100px;
+		overflow: hidden;
+		width: 28px;
+		height: 28px;
+		flex-shrink: 0;
+		transition: transform 200ms ease;
+	}
+
+	.wm-avatars a:hover {
+		transform: scale(1.1);
+	}
+
+	.wm-avatars img {
+		width: 28px;
+		height: 28px;
+		object-fit: cover;
+	}
+
+	.wm-avatar-fallback {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 28px;
+		height: 28px;
+		background: var(--color-3);
+		color: var(--color-5);
+		font-size: var(--font-size-sm);
+		font-weight: 550;
+	}
+
+	.wm-reply {
+		padding: var(--space-sm) 0;
+		border-top: 1px solid var(--color-3);
+	}
+
+	.wm-reply:last-child {
+		padding-bottom: 0;
+	}
+
+	.wm-reply-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--space-sm);
+		margin-bottom: var(--space-xs);
+	}
+
+	.wm-reply-author {
+		display: flex;
+		align-items: center;
+		gap: var(--space-xs);
+		text-decoration: none;
+		font-weight: 550;
+		font-size: var(--font-size-sm);
+	}
+
+	.wm-reply-author img {
+		width: 34px;
+		height: 34px;
+		border-radius: 100px;
+		object-fit: cover;
+		flex-shrink: 0;
+	}
+
+	.wm-reply-content {
+		font-size: var(--font-size-sm);
+		color: var(--color-5);
+		margin: 0;
+	}
+</style>

@@ -1,13 +1,7 @@
 ---
 /**
- * PostListItem — linha compacta título + data.
- * Mapeia wp:post-template em posts-recent.php (RecentPosts) e
- * posts-list.php (RelatedPosts).
- *
- * Props:
- *   separator    — exibe <hr> abaixo (default: true). false para RelatedPosts.
- *   titleFontSize — tamanho do título (default: var(--font-size-md)).
- *                   RelatedPosts usa var(--font-size-lg) per WP posts-list.php.
+ * PostListItem — compact title + date row.
+ * Used by RecentPosts (with separator) and RelatedPosts (without).
  */
 import type { CollectionEntry } from "astro:content";
 

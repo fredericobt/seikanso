@@ -30,7 +30,7 @@ const { posts } = Astro.props as { posts: CollectionEntry<"posts">[] };
 
 <Base title={`Posts tagged "${tag}"`}>
 	<Header />
-	<main class="constrained tag-main">
+	<main id="main-content" class="constrained tag-main">
 		<div class="tag-header">
 			<h1 class="tag-title">{tag}</h1>
 			<TagCloud />

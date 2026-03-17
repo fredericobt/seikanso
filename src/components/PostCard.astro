@@ -1,10 +1,7 @@
 ---
 /**
  * PostCard — card de post para listagens (archive, tag pages).
- * Mapeia WP parts/post.html usado em archive.html (font-size: large).
- *
- * API: recebe CollectionEntry<"posts"> completo para type-safety.
- * Props extras: excerptLength (default 36 palavras, como no WP).
+ * Mapeia WP parts/post.html (font-size: large).
  */
 import type { CollectionEntry } from "astro:content";
 
@@ -23,7 +20,6 @@ const dateFormatted = publishDate.toLocaleDateString("en-US", {
 	year: "numeric",
 });
 
-// Trunca excerpt para ~excerptLength palavras, como o bloco wp:post-excerpt
 const words = (description ?? "").split(" ");
 const excerpt =
 	words.length > excerptLength

@@ -1,0 +1,37 @@
+---
+import Navigation from "./Navigation.astro";
+import { siteConfig } from "../config/site";
+---
+
+<header class="header-vertical">
+	<div class="constrained header-vertical-inner">
+		<a href="/" class="site-title">{siteConfig.title}</a>
+		<Navigation orientation="horizontal" />
+	</div>
+</header>
+
+<style>
+	.header-vertical {
+		padding-top: var(--space-xl);
+		padding-bottom: var(--space-xl);
+	}
+
+	.header-vertical-inner {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: var(--space-lg);
+	}
+
+	.site-title {
+		font-size: var(--font-size-md);
+		font-weight: 550;
+		color: var(--color-6);
+		text-decoration: none;
+	}
+
+	.site-title:hover {
+		text-decoration: underline;
+		text-underline-offset: 2px;
+	}
+</style>

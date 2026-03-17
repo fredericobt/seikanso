@@ -20,9 +20,28 @@ The full migration plan is at: `wp-reference/MIGRATION-PLAN.md`
   - DONE: pagefind installed, postbuild script, Post.astro updated with RelatedPosts
   - DONE: Revised Session 3 components — PostCard/PostListItem com CollectionEntry API, TagCloud sem label interno (pill shape 100px), LatestPost autônomo (font-size-md), RecentPosts com excludeId, RelatedPosts usa PostListItem com separator=false + font-size-lg
   - NOTE: 10 sample posts (2 originais + 4 sessão 3 + 4 sessão 4); build produz 20+ páginas
-- **Session 5: PENDING** — Webmentions, Decap CMS, Sitemap + RSS
-- **Session 6: PENDING** — Header variants, ToolCards, WorkExperience, all 15 palettes, 3 typography configs
-- **Session 7: PENDING** — Polish, token validation, accessibility, Lighthouse audit
+- **Session 5: COMPLETE** — Webmentions, Decap CMS, Sitemap + RSS
+  - DONE: Webmentions.astro (fetch build-time de webmention.io — likes, reposts, replies), integrado em Post.astro
+  - DONE: Decap CMS (public/admin/index.html + config.yml — backend GitHub, collections posts + pages)
+  - DONE: rss.xml.ts (@astrojs/rss, posts ordenados, já instalado), sitemap já configurado desde S4
+  - DONE: Base.astro com RSS autodiscovery + link rel="webmention" condicional (só se webmentionDomain estiver configurado em site.ts)
+  - NOTE: Para ativar webmentions, preencher `webmentionDomain` em src/config/site.ts com o domínio registrado no webmention.io
+  - NOTE: Para ativar Decap CMS em produção, configurar OAuth app no GitHub (ou Netlify Identity)
+- **Session 6: COMPLETE** — Header variants, ToolCards, WorkExperience, all 15 palettes
+  - DONE: HeaderCover.astro (section-1 full-width + hero text centrado), HeaderVertical.astro (logo + nav centrados)
+  - DONE: ToolCards.astro (grid minmax 12rem, section-3 cards, props: items + label)
+  - DONE: WorkExperience.astro (33%/66% columns, gap lg entre itens, responsive mobile)
+  - DONE: 14 paletas novas em config/palettes/ — focus, blush, calm, calm-dark, ash, ash-dark, paper-dark, onyx, focus-dark, pitch, blue, green, red, yellow (todas com dark mode)
+  - NOTE: Tipografias (inter/monospace/serif) já estavam definidas em theme.ts como fontPresets — arquivos separados em config/fonts/ não são necessários
+  - NOTE: Para trocar paleta: alterar `activePalette` em src/config/theme.ts; para componentes de header alternativos, substituir Header.astro por HeaderCover ou HeaderVertical nas layouts
+- **Session 7: COMPLETE** — Polish, token validation, accessibility
+  - DONE: Token validation — todos os tokens (spacing, font sizes, layout, transition) conferidos contra theme.json ✅
+  - DONE: Base.astro — canonical URL, OG meta (og:type, og:url, og:title, og:description, og:image), Twitter card meta
+  - DONE: Skip link "Skip to content" → #main-content em todas as páginas
+  - DONE: Navigation.astro — aria-label="Main navigation"
+  - DONE: Post.astro + Page.astro — conteúdo em <article> (ativa regras de espaçamento do global.css: article > * + *)
+  - DONE: HeaderCover.astro — border-radius: 0 (fiel ao WP border-radius: 0px no is-style-section-1 full-width)
+  - DONE: id="main-content" em todos os <main> (index, search, tags, posts, 404, Post, Page)
 
 ## Key Decisions
 

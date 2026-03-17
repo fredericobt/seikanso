@@ -25,7 +25,7 @@ const { page } = Astro.props as { page: Page<CollectionEntry<"posts">> };
 
 <Base title="Posts" description="All posts.">
 	<Header />
-	<main class="constrained posts-main">
+	<main id="main-content" class="constrained posts-main">
 		<div class="posts-header">
 			<h1 class="posts-title">Posts</h1>
 			<TagCloud />

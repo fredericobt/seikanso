@@ -1,14 +1,7 @@
 ---
 /**
  * LatestPost — card destaque do post mais recente.
- * Mapeia patterns/posts-latest.php e a seção "Latest" de page-home.php.
- *
- * Design: label "Latest" + section-3 card com título (font-size: medium,
- * como no WP), data (M j, Y) e excerpt inline com "Keep reading →".
- *
- * Implementação autônoma (não depende de PostCard) para usar font-size-md
- * conforme o WP posts-latest.php (fontSize: "medium"), enquanto PostCard
- * usa font-size-lg para o contexto de archive.
+ * Mapeia patterns/posts-latest.php (font-size: medium).
  */
 import { getCollection } from "astro:content";
 
@@ -25,15 +18,14 @@ const dateFormatted = latest.data.publishDate.toLocaleDateString("en-US", {
 	year: "numeric",
 });
 
-// Excerpt: primeiras 36 palavras da description, como wp:post-excerpt
+const excerptLength = 36;
 const words = (latest.data.description ?? "").split(" ");
-const excerpt = words.length > 36
-	? words.slice(0, 36).join(" ") + "…"
+const excerpt = words.length > excerptLength
+	? words.slice(0, excerptLength).join(" ") + "…"
 	: latest.data.description;
 ---
 
-{latest && (
-	<section class="latest-post">
+<section class="latest-post">
 		<p class="text-subtitle">Latest</p>
 		<div class="latest-post__card section-3">
 			<h2 class="latest-post__title">
@@ -50,7 +42,6 @@ const excerpt = words.length > 36
 			)}
 		</div>
 	</section>
-)}
 
 <style>
 	.latest-post {

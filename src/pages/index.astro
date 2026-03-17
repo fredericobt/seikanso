@@ -20,7 +20,7 @@ const latestId = posts[0]?.id;
 
 <Base title={siteConfig.title} description={siteConfig.description}>
 	<Header />
-	<div class="constrained home-content">
+	<main id="main-content" class="constrained home-content">
 
 		<p class="text-subtitle site-tagline">{siteConfig.description}</p>
 
@@ -37,7 +37,7 @@ const latestId = posts[0]?.id;
 			<TagCloud />
 		</div>
 
-	</div>
+	</main>
 	<Footer />
 </Base>
 
