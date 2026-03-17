@@ -76,3 +76,15 @@ WP `--spacing--10` = 8px (xs), `--20` = 16px (sm), `--30` = 24px (md), `--40` = 
 - `RecentPosts` — `excludeId?: string` para evitar duplicar o LatestPost. `limit?: number`.
 - `RelatedPosts` — usa PostListItem com `separator={false}` + `titleFontSize="var(--font-size-lg)"`.
 - `Pagination` — recebe `page: Page<unknown>` do Astro paginate(). URLs derivadas de `page.url.first`.
+
+## Git / GitHub
+- `gh pr create` defaults to upstream (richtabor/kanso) — always use `--repo fredericobt/astro-kanso --head fredericobt:<branch>`
+
+## Search (Pagefind)
+- Pagefind UI does NOT read `?q=` URL params — search is accessed via nav link only, no inline forms
+
+## Decap CMS
+- `media_folder: public/uploads`, `public_folder: /uploads` — files in `src/` are not publicly served
+
+## Accessibility
+- Use `:focus-visible` (not bare `:focus`) for skip links and interactive elements — WCAG Technique C45
