@@ -21,7 +21,7 @@ An Astro port of [Kanso](https://github.com/richtabor/kanso), the minimalist Wor
 
 ### Prerequisites
 
-- Node.js 18+
+- Node.js 22+
 
 ### Install
 

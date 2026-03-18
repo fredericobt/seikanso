@@ -78,7 +78,18 @@ WP `--spacing--10` = 8px (xs), `--20` = 16px (sm), `--30` = 24px (md), `--40` = 
 - `Pagination` — recebe `page: Page<unknown>` do Astro paginate(). URLs derivadas de `page.url.first`.
 
 ## Git / GitHub
-- `gh pr create` defaults to upstream (richtabor/kanso) — always use `--repo fredericobt/astro-kanso --head fredericobt:<branch>`
+- Production repo is `fredericobt/seikanso` (astro-kanso was deleted after session 8)
+- Local remote: `git remote add seikanso https://github.com/fredericobt/seikanso.git`
+- Push to main is blocked by ruleset — always use a branch + PR
+- `gh pr create` must always specify `--repo fredericobt/seikanso --head fredericobt:<branch>` to avoid defaulting to upstream
+
+## CI / Node.js
+- Astro 6 requires Node.js >=22.12.0 — use `node-version: 22` in GitHub Actions workflows
+- Only one workflow exists: `.github/workflows/ci.yml` (runs `npm run build` on PRs and pushes to main)
+
+## GitHub Rulesets
+- Bypass by individual User actor does NOT work on personal repos (only orgs)
+- Current ruleset (id: 14034703): deletion protection on main only — PR review requirement was removed because owner cannot approve their own PRs
 
 ## Search (Pagefind)
 - Pagefind UI does NOT read `?q=` URL params — search is accessed via nav link only, no inline forms
