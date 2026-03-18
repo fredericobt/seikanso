@@ -1,0 +1,63 @@
+---
+interface ToolCard {
+	name: string;
+	url: string;
+	description: string;
+}
+
+interface Props {
+	items: ToolCard[];
+	label?: string;
+}
+
+const { items, label = "Tools" } = Astro.props;
+---
+
+<div class="tool-cards">
+	<p class="text-subtitle tool-cards-label">{label}</p>
+	<div class="tool-cards-grid">
+		{
+			items.map((item) => (
+				<div class="section-3 tool-card">
+					<p class="tool-card-name">
+						<a href={item.url}>{item.name}</a>
+					</p>
+					<p class="tool-card-description text-subtitle">{item.description}</p>
+				</div>
+			))
+		}
+	</div>
+</div>
+
+<style>
+	.tool-cards {
+		padding-top: var(--space-xs);
+		padding-bottom: var(--space-xs);
+	}
+
+	.tool-cards-label {
+		margin-bottom: var(--space-sm);
+	}
+
+	.tool-cards-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+		gap: var(--space-xs);
+	}
+
+	.tool-card {
+		padding: var(--space-sm);
+		display: flex;
+		flex-direction: column;
+	}
+
+	.tool-card-name {
+		font-size: var(--font-size-sm);
+		margin: 0;
+	}
+
+	.tool-card-description {
+		font-size: var(--font-size-sm);
+		margin: 0;
+	}
+</style>

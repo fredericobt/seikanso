@@ -9,7 +9,7 @@ const { orientation = "horizontal" } = Astro.props;
 const currentPath = Astro.url.pathname;
 ---
 
-<nav>
+<nav aria-label="Main navigation">
 	<ul class:list={["nav", `nav-${orientation}`]}>
 		{siteConfig.navigation.map((item) => (
 			<li>
@@ -42,11 +42,7 @@ const currentPath = Astro.url.pathname;
 		text-decoration: none;
 	}
 
-	.nav a:hover {
-		text-decoration: underline;
-		text-underline-offset: 2px;
-	}
-
+	.nav a:hover,
 	.nav a[aria-current="page"] {
 		text-decoration: underline;
 		text-underline-offset: 2px;

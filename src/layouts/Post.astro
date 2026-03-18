@@ -2,15 +2,18 @@
 import Base from "./Base.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import RelatedPosts from "../components/RelatedPosts.astro";
+import Webmentions from "../components/Webmentions.astro";
 
 interface Props {
 	title: string;
 	description?: string;
 	publishDate: Date;
 	tags?: string[];
+	id: string;
 }
 
-const { title, description, publishDate, tags = [] } = Astro.props;
+const { title, description, publishDate, tags = [], id } = Astro.props;
 
 const dateFormatted = publishDate.toLocaleDateString("en-US", {
 	month: "short",
@@ -19,9 +22,9 @@ const dateFormatted = publishDate.toLocaleDateString("en-US", {
 });
 ---
 
-<Base title={title} description={description}>
+<Base title={title} description={description} ogType="article">
 	<Header />
-	<main class="constrained post-main">
+	<main id="main-content" class="constrained post-main">
 		<header class="post-header">
 			<h1>{title}</h1>
 			<time datetime={publishDate.toISOString()} class="post-date text-subtitle">
@@ -29,9 +32,9 @@ const dateFormatted = publishDate.toLocaleDateString("en-US", {
 			</time>
 		</header>
 
-		<div class="post-content" data-pagefind-body>
+		<article class="post-content" data-pagefind-body>
 			<slot />
-		</div>
+		</article>
 
 		{tags.length > 0 && (
 			<div class="post-tags">
@@ -40,6 +43,13 @@ const dateFormatted = publishDate.toLocaleDateString("en-US", {
 				))}
 			</div>
 		)}
+		<div class="post-webmentions">
+			<Webmentions />
+		</div>
+
+		<div class="post-related">
+			<RelatedPosts currentId={id} />
+		</div>
 	</main>
 	<Footer />
 </Base>
@@ -64,6 +74,10 @@ const dateFormatted = publishDate.toLocaleDateString("en-US", {
 
 	.post-content {
 		margin-bottom: var(--space-lg);
+	}
+
+	.post-related {
+		border-top: 1px solid var(--color-3);
 	}
 
 	.post-tags {

@@ -13,14 +13,14 @@ const { title, description } = Astro.props;
 
 <Base title={title} description={description}>
 	<Header />
-	<main class="constrained page-main">
+	<main id="main-content" class="constrained page-main">
 		<header class="page-header">
 			<h1>{title}</h1>
 		</header>
 
-		<div class="page-content" data-pagefind-body>
+		<article class="page-content" data-pagefind-body>
 			<slot />
-		</div>
+		</article>
 	</main>
 	<Footer />
 </Base>

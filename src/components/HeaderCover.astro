@@ -1,0 +1,77 @@
+---
+import Navigation from "./Navigation.astro";
+import { siteConfig } from "../config/site";
+
+interface Props {
+	heading?: string;
+	subtitle?: string;
+}
+
+const { heading = siteConfig.title, subtitle = siteConfig.description } =
+	Astro.props;
+---
+
+<header class="header-cover">
+	<div class="section-1 header-cover-inner">
+		<div class="constrained header-cover-top">
+			<a href="/" class="site-title">{siteConfig.title}</a>
+			<Navigation orientation="horizontal" />
+		</div>
+
+		<div class="constrained header-cover-hero">
+			<h2 class="cover-heading">{heading}</h2>
+			<p class="cover-subtitle text-subtitle">{subtitle}</p>
+		</div>
+	</div>
+
+	<div class="header-cover-spacer" aria-hidden="true"></div>
+</header>
+
+<style>
+	.header-cover-inner {
+		border-radius: 0;
+		padding-top: var(--space-lg);
+		padding-bottom: var(--space-lg);
+	}
+
+	.header-cover-top {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--space-sm);
+		flex-wrap: nowrap;
+	}
+
+	.site-title {
+		font-size: var(--font-size-md);
+		font-weight: 550;
+		color: var(--color-4);
+		text-decoration: none;
+		white-space: nowrap;
+	}
+
+	.site-title:hover {
+		text-decoration: underline;
+		text-underline-offset: 2px;
+	}
+
+	.header-cover-hero {
+		padding-top: 8vw;
+		padding-bottom: 11vw;
+		text-align: center;
+	}
+
+	.cover-heading {
+		font-size: 3rem;
+		margin-bottom: var(--space-sm);
+	}
+
+	.cover-subtitle {
+		font-size: var(--font-size-lg);
+		margin: 0;
+	}
+
+	.header-cover-spacer {
+		height: var(--space-xl);
+	}
+</style>

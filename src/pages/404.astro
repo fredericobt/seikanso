@@ -1,0 +1,53 @@
+---
+/**
+ * 404 — "Whoops, that page is gone."
+ * Maps to WP templates/404.html.
+ *
+ * Design: centered heading + description, min-height 70vh.
+ */
+import Base from "../layouts/Base.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+---
+
+<Base title="Page not found">
+	<Header />
+	<main id="main-content" class="not-found">
+		<div class="not-found__inner">
+			<h1 class="not-found__heading">Whoops, that page is gone.</h1>
+			<p class="not-found__desc">Discover my popular posts, or search for something else.</p>
+		</div>
+	</main>
+	<Footer />
+</Base>
+
+<style>
+	.not-found {
+		min-height: 70vh;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.not-found__inner {
+		width: 100%;
+		max-width: 280px;
+		text-align: center;
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-xs);
+	}
+
+	.not-found__heading {
+		font-size: var(--font-size-xl);
+		color: var(--color-6);
+		text-wrap: balance;
+		margin: 0;
+	}
+
+	.not-found__desc {
+		color: var(--color-5);
+		margin: 0;
+	}
+
+</style>

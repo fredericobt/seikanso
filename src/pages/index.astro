@@ -4,20 +4,23 @@
  * Tagline → LatestPost → RecentPosts → TagCloud
  */
 import Base from "../layouts/Base.astro";
-import { siteConfig } from "../config/site";
-import { getCollection } from "astro:content";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
 import LatestPost from "../components/LatestPost.astro";
 import RecentPosts from "../components/RecentPosts.astro";
 import TagCloud from "../components/TagCloud.astro";
+import { siteConfig } from "../config/site";
+import { getCollection } from "astro:content";
 
-// Get the latest post id to exclude it from RecentPosts
-const posts = await getCollection("posts", ({ data }) => !data.draft);
-posts.sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
+// Obtém o id do post mais recente para excluí-lo do RecentPosts
+const posts = (await getCollection("posts", ({ data }) => !data.draft))
+	.sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
 const latestId = posts[0]?.id;
 ---
 
 <Base title={siteConfig.title} description={siteConfig.description}>
-	<div class="constrained home-content">
+	<Header />
+	<main id="main-content" class="constrained home-content">
 
 		<p class="text-subtitle site-tagline">{siteConfig.description}</p>
 
@@ -30,10 +33,12 @@ const latestId = posts[0]?.id;
 		</div>
 
 		<div class="home-section">
+			<p class="text-subtitle">Topics</p>
 			<TagCloud />
 		</div>
 
-	</div>
+	</main>
+	<Footer />
 </Base>
 
 <style>

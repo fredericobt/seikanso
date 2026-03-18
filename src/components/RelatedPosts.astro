@@ -1,0 +1,54 @@
+---
+/**
+ * RelatedPosts — "You may also enjoy…" no final de posts single.
+ * Mapeia patterns/posts-list.php e a seção de posts em single.html.
+ *
+ * Design: heading h2 em text-subtitle + lista de PostListItems sem separador,
+ * título em font-size-lg (fontSize: "large" no WP posts-list.php),
+ * data em Mon Year à direita.
+ *
+ * Props:
+ *   currentId — id do post atual (excluído da lista)
+ *   limit     — máx de posts (default: 20, como no WP perPage: 60 truncado)
+ */
+import { getCollection } from "astro:content";
+import PostListItem from "./PostListItem.astro";
+
+interface Props {
+	currentId: string;
+	limit?: number;
+}
+
+const { currentId, limit = 20 } = Astro.props;
+
+const posts = (await getCollection("posts", ({ data }) => !data.draft))
+	.filter(p => p.id !== currentId)
+	.sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf())
+	.slice(0, limit);
+---
+
+{posts.length > 0 && (
+	<div class="related-posts">
+		<h2 class="related-posts__heading text-subtitle">You may also enjoy…</h2>
+		{posts.map(post => (
+			<PostListItem
+				post={post}
+				separator={false}
+				titleFontSize="var(--font-size-lg)"
+			/>
+		))}
+	</div>
+)}
+
+<style>
+	.related-posts {
+		padding-top: var(--space-md);
+		padding-bottom: var(--space-md);
+	}
+
+	.related-posts__heading {
+		font-size: inherit;
+		font-weight: inherit;
+		margin: 0;
+	}
+</style>

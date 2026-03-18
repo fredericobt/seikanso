@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "postbuild": "pagefind --site dist",
     "preview": "astro preview",
     "astro": "astro"
   },
@@ -13,5 +14,8 @@
     "@astrojs/rss": "^4.0.17",
     "@astrojs/sitemap": "^3.7.1",
     "astro": "^6.0.5"
+  },
+  "devDependencies": {
+    "pagefind": "^1.4.0"
   }
 }

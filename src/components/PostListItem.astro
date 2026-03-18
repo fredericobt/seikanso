@@ -1,35 +1,36 @@
 ---
 /**
- * PostListItem — título + data em linha com separador
- * Mapeia o item dentro do wp:post-template em posts-recent.php
- * flex row, space-between, separator <hr> abaixo
+ * PostListItem — compact title + date row.
+ * Used by RecentPosts (with separator) and RelatedPosts (without).
  */
 import type { CollectionEntry } from "astro:content";
 
 interface Props {
 	post: CollectionEntry<"posts">;
+	separator?: boolean;
+	titleFontSize?: string;
 }
 
-const { post } = Astro.props;
+const { post, separator = true, titleFontSize = "var(--font-size-md)" } = Astro.props;
 const { title, publishDate } = post.data;
-const slug = post.id;
+const href = `/${post.id}`;
 
-const date = new Date(publishDate);
-const dateFormatted = date.toLocaleDateString("en-US", {
+const dateFormatted = publishDate.toLocaleDateString("en-US", {
 	month: "short",
 	year: "numeric",
 });
-const dateISO = date.toISOString();
 ---
 
 <div class="post-list-item">
-	<div class="post-list-row">
-		<a href={`/${slug}`} class="post-list-title">{title}</a>
-		<time datetime={dateISO} class="post-list-date">
-			<a href={`/${slug}`}>{dateFormatted}</a>
+	<div class="post-list-item__row">
+		<a href={href} class="post-list-item__title" style={`font-size: ${titleFontSize}`}>
+			{title}
+		</a>
+		<time datetime={publishDate.toISOString()} class="post-list-item__date">
+			<a href={href}>{dateFormatted}</a>
 		</time>
 	</div>
-	<hr class="post-list-separator" />
+	{separator && <hr class="post-list-item__sep" />}
 </div>
 
 <style>
@@ -38,7 +39,7 @@ const dateISO = date.toISOString();
 		flex-direction: column;
 	}
 
-	.post-list-row {
+	.post-list-item__row {
 		display: flex;
 		align-items: baseline;
 		justify-content: space-between;
@@ -47,8 +48,8 @@ const dateISO = date.toISOString();
 		padding-bottom: 12px;
 	}
 
-	.post-list-title {
-		font-size: var(--font-size-md);
+	.post-list-item__title {
+		/* font-size set via inline style prop */
 		font-weight: 400;
 		line-height: 1.2;
 		color: var(--color-6);
@@ -59,12 +60,12 @@ const dateISO = date.toISOString();
 		min-width: 0;
 	}
 
-	.post-list-title:hover {
+	.post-list-item__title:hover {
 		text-decoration: underline;
 		text-underline-offset: 2px;
 	}
 
-	.post-list-date {
+	.post-list-item__date {
 		font-size: var(--font-size-sm);
 		color: var(--color-5);
 		line-height: 1.2;
@@ -72,17 +73,17 @@ const dateISO = date.toISOString();
 		flex-shrink: 0;
 	}
 
-	.post-list-date a {
+	.post-list-item__date a {
 		color: inherit;
 		text-decoration: none;
 	}
 
-	.post-list-date a:hover {
+	.post-list-item__date a:hover {
 		text-decoration: underline;
 		text-underline-offset: 2px;
 	}
 
-	.post-list-separator {
+	.post-list-item__sep {
 		margin: 0;
 		border: none;
 		border-top: 1px solid var(--color-3);

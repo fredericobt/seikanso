@@ -1,14 +1,18 @@
 ---
 /**
- * TagCloud — tags como pills clicáveis
- * Mapeia core/tag-cloud do theme.json + seção "Topics" de page-home.php
- * Tags únicas extraídas de todos os posts, ordenadas alfabeticamente
+ * TagCloud — tags como pills clicáveis.
+ * Mapeia core/tag-cloud do theme.json.
+ *
+ * Sem label interno — o pai decide o título (ex: "Topics" em index.astro,
+ * nenhum em tags/[tag].astro). Tags ordenadas alfabeticamente.
+ *
+ * Visual: pill shape (border-radius 100px), igual ao tag-pill do Post.astro,
+ * fiel ao estilo rounded do WP Kanso.
  */
 import { getCollection } from "astro:content";
 
 const posts = await getCollection("posts", ({ data }) => !data.draft);
 
-// Collect all unique tags
 const tagSet = new Set<string>();
 for (const post of posts) {
 	for (const tag of post.data.tags) {
@@ -18,48 +22,36 @@ for (const post of posts) {
 const tags = [...tagSet].sort();
 ---
 
-{
-	tags.length > 0 && (
-		<section class="tag-cloud">
-			<p class="text-subtitle">Topics</p>
-			<div class="tag-list">
-				{tags.map((tag) => (
-					<a href={`/tags/${tag}`} class="tag-pill">
-						{tag}
-					</a>
-				))}
-			</div>
-		</section>
-	)
-}
+{tags.length > 0 && (
+	<div class="tag-cloud">
+		{tags.map(tag => (
+			<a href={`/tags/${tag}`} class="tag-pill">{tag}</a>
+		))}
+	</div>
+)}
 
 <style>
 	.tag-cloud {
 		display: flex;
-		flex-direction: column;
-	}
-
-	.tag-list {
-		display: flex;
 		flex-wrap: wrap;
 		gap: 6px;
-		margin-top: 0;
 	}
 
 	.tag-pill {
 		display: inline-block;
-		font-size: var(--font-size-sm);
-		color: var(--color-6);
+		padding: 2px 10px;
+		border: 1px solid var(--color-4);
+		border-radius: 100px;
+		font-size: 12px;
+		color: var(--color-5);
 		text-decoration: none;
-		border: 1px solid var(--color-3);
-		border-radius: 4px;
-		padding: 2px var(--space-sm);
 		line-height: 1.6;
-		transition: background-color 150ms ease, transform 150ms ease;
+		transition: transform 200ms ease, border-color 200ms ease, color 200ms ease;
 	}
 
 	.tag-pill:hover {
-		background-color: var(--color-2);
-		transform: scale(1.04);
+		transform: scale(1.05);
+		border-color: var(--color-5);
+		color: var(--color-6);
 	}
 </style>
