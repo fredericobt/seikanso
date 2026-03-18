@@ -1,47 +1,72 @@
-# Kanso WordPress Block Theme
+# Seikanso — 星簡素
 
-[![Code Quality](https://github.com/richtabor/kanso/actions/workflows/check-formatting.yml/badge.svg)](https://github.com/richtabor/kanso/actions/workflows/check-formatting.yml) [![Deploy to https://rich.blog](https://github.com/richtabor/kanso/actions/workflows/deploy.yml/badge.svg)](https://github.com/richtabor/kanso/actions/workflows/deploy.yml)
+An Astro port of [Kanso](https://github.com/richtabor/kanso), the minimalist WordPress block theme by Rich Tabor.
 
-<a href="https://rich.blog/kanso">Kanso</a> is a simple and intuitive block theme designed with a focus on blogging. 
+**Kanso** (簡素) is one of the seven principles of Zen aesthetics — simplicity, the elimination of clutter. **Sei** (星) means star. Seikanso is a static site built around that same philosophy.
 
-**[Try Kanso on WordPress Playground →](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/richtabor/kanso/main/blueprint.json&mode=seamless)**
+## Features
 
-It offers a clean and distraction-free reading experience, perfect for bloggers who want their content to take center stage. Kanso also includes several patterns for newsletters, providing an easy way to engage with your audience. The theme features 20 color variations and three font variations (sans serif, monospace, and serif), offering a variety of customization options. Additionally, Kanso supports section styles and text styles across all elements, ensuring a cohesive and visually appealing design that you can flex however you'd like.
+- Clean, distraction-free reading experience faithful to the original Kanso design
+- 15 color palettes (paper, paper-dark, blush, calm, calm-dark, ash, ash-dark, onyx, pitch, focus, focus-dark, blue, green, red, yellow)
+- 3 font variants: sans-serif (Inter), monospace (Geist Mono), serif (Noto Serif)
+- 3 header variants: default, cover (full-width hero), vertical (centered logo + nav)
+- Static search via [Pagefind](https://pagefind.app)
+- Webmentions via [webmention.io](https://webmention.io)
+- RSS feed + sitemap
+- [Decap CMS](https://decapcms.org) ready (GitHub backend)
+- Pure CSS with custom properties — no Tailwind, no utility classes
+- Self-hosted fonts
 
-Want cool blocks? [I have a few here.](https://github.com/richtabor/blocks) 
-
-## Contributing
-
-I welcome contributors to [keep iterating](https://rich.blog/iteration/) on the theme. To get started with developing Kanso WordPress theme, follow these steps:
+## Getting Started
 
 ### Prerequisites
 
-Ensure you have the following tools installed:
+- Node.js 18+
 
-- [Node.js](https://nodejs.org/) (version 14.x, 16.x, 17.x, 18.x, or 19.x recommended)
-- [npm](https://www.npmjs.com/) (comes with Node.js)
-- [Composer](https://getcomposer.org/)
-
-### Setup
-
-#### 1. Download or clone this repository
-You'll want to add it to your local WordPress `wp-content/themes/` directory.
+### Install
 
 ```sh
-git clone https://github.com/richtabor/kanso.git
-cd kanso
+git clone https://github.com/fredericobt/seikanso.git
+cd seikanso
+npm install
 ```
 
-#### 2. Install dependencies
-Run `npm run setup` to install all necessary development dependencies.
+### Develop
 
+```sh
+npm run dev
+```
 
-## Available scripts
+### Build
 
-In the project directory, you can run the following scripts:
+```sh
+npm run build
+```
 
-#### 1. Code formatting
-Run `npm run format` to format both PHP and JSON files according to the WordPress coding standards.
+The `postbuild` script runs Pagefind automatically to index the site for search.
 
-#### 2. Create theme zip
-Run `npm run theme-zip` to build a zip file of the theme for distribution. 
+### Preview
+
+```sh
+npm run preview
+```
+
+## Configuration
+
+All site-level settings are in `src/config/`:
+
+| File | Purpose |
+|------|---------|
+| `site.ts` | Site name, URL, navigation links, webmention domain |
+| `theme.ts` | Active palette, font preset, spacing and layout tokens |
+| `palettes/` | 15 color palette files |
+
+To switch palette, change `activePalette` in `src/config/theme.ts`.
+
+## CMS
+
+Decap CMS is available at `/admin/`. To enable it in production, configure a GitHub OAuth app or Netlify Identity on your deployment.
+
+## Credits
+
+Original WordPress theme by [Rich Tabor](https://github.com/richtabor/kanso) — used as visual reference only.
