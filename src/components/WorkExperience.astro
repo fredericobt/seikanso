@@ -36,12 +36,11 @@ const { items, label = "Work Experience" } = Astro.props;
 
 <style>
 	.work-experience {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-sm);
 		padding-top: var(--space-xs);
 		padding-bottom: var(--space-xs);
-	}
-
-	.work-experience-label {
-		margin-bottom: var(--space-sm);
 	}
 
 	.work-experience-list {
