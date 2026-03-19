@@ -46,10 +46,11 @@ const posts = (await getCollection("posts", ({ data }) => !data.draft))
 	.recent-posts {
 		display: flex;
 		flex-direction: column;
+		gap: var(--space-sm);
 	}
 
 	.recent-posts__card {
-		padding: var(--space-sm) var(--space-md);
+		padding: 6px var(--space-md) 26px;
 	}
 
 	.recent-posts__list {

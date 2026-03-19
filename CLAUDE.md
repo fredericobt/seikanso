@@ -46,6 +46,17 @@ Visual reference: https://rich.blog/
 - `.constrained` max-width = `calc(var(--content-width) + 2 * var(--space-md))` (WP is-layout-constrained pattern)
 - WP spacing: `--spacing--10`=8px(xs), `--20`=16px(sm), `--30`=24px(md), `--40`=32px(lg), `--50`=48px(xl)
 
+## Spacing Consistency Rules (WP → Astro)
+
+WordPress block patterns use `blockGap` on parent groups to space children. In flow layout (`layout: "default"`), blockGap generates `margin-top` on children via `> * + *`. In flex layout, it generates `gap`. When converting WP patterns to Astro components, follow these rules:
+
+1. **Label-to-card spacing**: Use `gap` on the parent flex container, NEVER `margin-bottom` on the label. The parent container must be `display: flex; flex-direction: column; gap: var(--space-sm)`. This matches WP's default blockGap of `--spacing--20` (16px).
+2. **Inner card spacing**: Use `gap` on the card's flex container (e.g., `gap: var(--space-xs)` for `blockGap: --spacing--10`).
+3. **Padding values**: Match WP's exact padding on section-3 cards. WP often uses pixel values for fine-tuning (e.g., `6px` top, `26px` bottom on RecentPosts card). Preserve these as-is — they account for child element padding to achieve correct total spacing.
+4. **Section separation**: Use `margin-top` on section wrappers (not spacer divs).
+5. **Separators**: Always `margin: 0` on `<hr>` elements inside list items.
+6. **Never use `margin-bottom` on labels** to create label-to-content spacing — use `gap` on the parent instead.
+
 ## Workflow
 
 - **This is the source of truth for all design/code changes**
