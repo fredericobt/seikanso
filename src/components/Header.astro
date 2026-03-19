@@ -5,10 +5,41 @@ import { siteConfig } from "../config/site";
 
 <header class="site-header">
 	<div class="constrained header-inner">
-		<a href="/" class="site-title">{siteConfig.title}</a>
-		<Navigation orientation="horizontal" />
+		<a href="/" class="site-title">
+			<span class="site-avatar" aria-hidden="true"></span>
+			{siteConfig.title}
+		</a>
+		<div class="header-right">
+			<Navigation orientation="horizontal" />
+			<button
+				type="button"
+				class="theme-toggle"
+				aria-label="Switch to dark mode"
+				role="switch"
+				aria-checked="false"
+			>
+				<span class="theme-toggle__thumb"></span>
+			</button>
+		</div>
 	</div>
 </header>
+
+<script>
+	const toggle = document.querySelector('.theme-toggle');
+	const html = document.documentElement;
+	const stored = localStorage.getItem('theme');
+	if (stored === 'dark' || (!stored && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+		html.classList.add('theme-dark');
+		toggle?.setAttribute('aria-checked', 'true');
+		toggle?.setAttribute('aria-label', 'Switch to light mode');
+	}
+	toggle?.addEventListener('click', () => {
+		const isDark = html.classList.toggle('theme-dark');
+		toggle.setAttribute('aria-checked', String(isDark));
+		toggle.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+		localStorage.setItem('theme', isDark ? 'dark' : 'light');
+	});
+</script>
 
 <style>
 	.site-header {
@@ -25,6 +56,9 @@ import { siteConfig } from "../config/site";
 	}
 
 	.site-title {
+		display: flex;
+		align-items: center;
+		gap: 10px;
 		font-size: var(--font-size-md);
 		font-weight: 550;
 		color: var(--color-6);
@@ -35,5 +69,53 @@ import { siteConfig } from "../config/site";
 	.site-title:hover {
 		text-decoration: underline;
 		text-underline-offset: 2px;
+	}
+
+	.site-avatar {
+		display: block;
+		width: 60px;
+		height: 60px;
+		border-radius: 50%;
+		background-color: var(--color-3);
+		flex-shrink: 0;
+	}
+
+	.header-right {
+		display: flex;
+		align-items: center;
+		gap: var(--space-sm);
+	}
+
+	/* ── Dark mode toggle ── */
+	.theme-toggle {
+		position: relative;
+		width: 48px;
+		height: 28px;
+		border-radius: 14px;
+		border: none;
+		background-color: var(--color-3);
+		cursor: pointer;
+		padding: 0;
+		transition: background-color var(--transition-duration) ease;
+	}
+
+	.theme-toggle[aria-checked="true"] {
+		background-color: var(--color-5);
+	}
+
+	.theme-toggle__thumb {
+		position: absolute;
+		top: 4px;
+		left: 4px;
+		width: 20px;
+		height: 20px;
+		border-radius: 50%;
+		background-color: var(--color-1);
+		transition: transform var(--transition-duration) ease;
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+	}
+
+	.theme-toggle[aria-checked="true"] .theme-toggle__thumb {
+		transform: translateX(20px);
 	}
 </style>

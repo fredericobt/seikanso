@@ -50,10 +50,10 @@ const excerpt = words.length > excerptLength
 	}
 
 	.latest-post__card {
-		padding: 22px var(--space-md);
 		display: flex;
 		flex-direction: column;
 		gap: var(--space-xs);
+		padding: var(--space-md);
 	}
 
 	.latest-post__title {
@@ -89,20 +89,20 @@ const excerpt = words.length > excerptLength
 	}
 
 	.latest-post__excerpt {
-		font-size: var(--font-size-sm);
-		color: var(--color-5);
+		font-size: var(--font-size-body);
+		color: var(--color-6);
 		margin: 0;
 		line-height: 1.6;
 	}
 
 	.latest-post__more {
 		color: var(--color-6);
-		text-decoration: none;
+		text-decoration: underline;
+		text-underline-offset: 2px;
 		white-space: nowrap;
 	}
 
 	.latest-post__more:hover {
-		text-decoration: underline;
-		text-underline-offset: 2px;
+		text-decoration: none;
 	}
 </style>
